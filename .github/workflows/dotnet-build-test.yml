@@ -2,7 +2,7 @@ name: .NET Build & Test
 
 on:
   push:
-    branches: [ "main", "master", "develop" ]
+    branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
 
@@ -14,23 +14,28 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup .NET
+    - name: Setup .NET 10 (Preview)
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.0.x'  # .NET 10 preview
+        dotnet-version: |
+          10.0.x
+          8.0.x
+
+    - name: Install .NET 10 preview SDK (if needed)
+      run: |
+        wget https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh
+        chmod +x dotnet-install.sh
+        ./dotnet-install.sh --channel 10.0 --quality daily
+        echo "$HOME/.dotnet" >> $GITHUB_PATH
+
+    - name: Verify .NET version
+      run: dotnet --info
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore PROG7311-POE.slnx
 
     - name: Build solution
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build PROG7311-POE.slnx --no-restore --configuration Release
 
     - name: Run unit tests
-      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test_results.trx"
-
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: TestResults/*.trx
+      run: dotnet test PROG7311-POE.slnx --no-build --configuration Release --verbosity normal
