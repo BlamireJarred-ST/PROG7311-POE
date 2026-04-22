@@ -1,0 +1,42 @@
+﻿@model PROG7311_POE.Models.Contract
+
+@{
+    ViewData["Title"] = "Contract Details";
+}
+
+<h1>Contract Details</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Client</dt>
+        <dd class="col-sm-10">@Model.Client?.Name</dd>
+
+        <dt class="col-sm-2">Start Date</dt>
+        <dd class="col-sm-10">@Model.StartDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">End Date</dt>
+        <dd class="col-sm-10">@Model.EndDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.Status</dd>
+
+        <dt class="col-sm-2">Service Level</dt>
+        <dd class="col-sm-10">@Model.ServiceLevel</dd>
+
+        <dt class="col-sm-2">Signed Agreement</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.SignedAgreementPath))
+            {
+                <a asp-action="DownloadFile" asp-route-id="@Model.Id">Download PDF</a>
+            }
+            else
+            {
+                <span class="text-muted">No file uploaded.</span>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

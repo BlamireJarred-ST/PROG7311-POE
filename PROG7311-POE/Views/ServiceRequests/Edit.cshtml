@@ -1,0 +1,77 @@
+﻿@model PROG7311_POE.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Edit Service Request";
+    var activeContracts = ViewBag.ActiveContracts as List<PROG7311_POE.Models.Contract>;
+}
+
+<h1>Edit Service Request</h1>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ContractId" class="control-label"></label>
+        <select asp-for="ContractId" class="form-control">
+            @if (activeContracts != null)
+            {
+                foreach (var contract in activeContracts)
+                {
+                    <option value="@contract.Id" selected="@(contract.Id == Model.ContractId)">
+                        @contract.Client?.Name - @contract.ServiceLevel (@contract.Status)
+                    </option>
+                }
+            }
+        </select>
+        <span asp-validation-for="ContractId" class="text-danger"></span>
+    </div>
+
+    <!-- NEW: Transport Type dropdown -->
+    <div class="form-group">
+        <label asp-for="TransportType" class="control-label"></label>
+        <select asp-for="TransportType" class="form-control">
+            <option value="Road">🚚 Road Transport</option>
+            <option value="Air">✈️ Air Transport (+30% cost)</option>
+            <option value="Sea">🚢 Sea Transport (-10% cost)</option>
+        </select>
+        <span asp-validation-for="TransportType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Cost" class="control-label"></label>
+        <input asp-for="Cost" class="form-control" step="0.01" />
+        <span asp-validation-for="Cost" class="text-danger"></span>
+        <small class="form-text text-muted">USD amount (editing will not automatically recalc ZAR – save to update).</small>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CostZar" class="control-label"></label>
+        <input asp-for="CostZar" class="form-control" readonly="@(true)" />
+        <span asp-validation-for="CostZar" class="text-danger"></span>
+        <small class="form-text text-muted">ZAR amount (auto-calculated from USD using current exchange rate).</small>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<PROG7311_POE.Models.RequestStatus>()" class="form-control"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,69 @@
+﻿@model PROG7311_POE.ViewModels.ContractCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Contract";
+    var clients = ViewBag.Clients as List<PROG7311_POE.Models.Client>;
+}
+
+<h1>Create Contract</h1>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ClientId" class="control-label"></label>
+        <select asp-for="ClientId" class="form-control">
+            <option value=""> Select Client </option>
+            @if (clients != null)
+            {
+                foreach (var client in clients)
+                {
+                    <option value="@client.Id">@client.Name</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="ClientId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<PROG7311_POE.Models.ContractStatus>()" class="form-control"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ServiceLevel" class="control-label"></label>
+        <input asp-for="ServiceLevel" class="form-control" />
+        <span asp-validation-for="ServiceLevel" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SignedAgreement" class="control-label"></label>
+        <input asp-for="SignedAgreement" type="file" class="form-control" accept=".pdf" />
+        <span asp-validation-for="SignedAgreement" class="text-danger"></span>
+        <small class="form-text text-muted">Only PDF files are allowed.</small>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

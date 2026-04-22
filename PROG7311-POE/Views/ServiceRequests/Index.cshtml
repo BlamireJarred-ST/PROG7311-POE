@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PROG7311_POE.Models.ServiceRequest>
+
+@{
+    ViewData["Title"] = "Service Requests";
+}
+
+<h1>Service Requests</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Request</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Contract (Client)</th>
+            <th>Transport</th>
+            <th>Description</th>
+            <th>Cost (USD)</th>
+            <th>Cost (ZAR)</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Contract?.Client?.Name <br />
+                    <small class="text-muted">@item.Contract?.ServiceLevel</small>
+                </td>
+                <td>@item.TransportType</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cost)</td>
+                <td>@Html.DisplayFor(modelItem => item.CostZar)</td>
+                <td>@item.Status</td>
+                <td>@item.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

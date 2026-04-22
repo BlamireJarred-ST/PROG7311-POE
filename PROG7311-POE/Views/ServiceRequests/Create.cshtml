@@ -1,0 +1,66 @@
+﻿@model PROG7311_POE.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Create Service Request";
+    var activeContracts = ViewBag.ActiveContracts as List<PROG7311_POE.Models.Contract>;
+}
+
+<h1>Create Service Request</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ContractId" class="control-label"></label>
+        <select asp-for="ContractId" name="ContractId" class="form-control">
+            <option value="">-- Select an Active Contract --</option>
+            @if (activeContracts != null)
+            {
+                foreach (var contract in activeContracts)
+                {
+                    <option value="@contract.Id">
+                        @contract.Client?.Name - @contract.ServiceLevel (Active until @contract.EndDate.ToShortDateString())
+                    </option>
+                }
+            }
+        </select>
+        <span asp-validation-for="ContractId" class="text-danger"></span>
+    </div>
+
+    <!-- Transport dropdown -->
+    <div class="form-group">
+        <label asp-for="TransportType" class="control-label"></label>
+        <select asp-for="TransportType" class="form-control">
+            <option value="Road"> Road Transport (standard cost)</option>
+            <option value="Air"> Air Transport (+30% cost)</option>
+            <option value="Sea"> Sea Transport (-10% cost)</option>
+        </select>
+        <span asp-validation-for="TransportType" class="text-danger"></span>
+        <small class="form-text text-muted">Transport type affects the final cost.</small>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Cost" class="control-label"></label>
+        <input asp-for="Cost" class="form-control" step="0.01" />
+        <span asp-validation-for="Cost" class="text-danger"></span>
+        <small class="form-text text-muted">Amount in USD – will be converted to ZAR automatically.</small>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

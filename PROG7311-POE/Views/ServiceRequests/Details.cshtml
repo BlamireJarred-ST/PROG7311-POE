@@ -1,0 +1,36 @@
+﻿@model PROG7311_POE.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Service Request Details";
+}
+
+<h1>Service Request Details</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Contract</dt>
+        <dd class="col-sm-9">@Model.Contract?.Client?.Name - @Model.Contract?.ServiceLevel (Status: @Model.Contract?.Status)</dd>
+
+        <dt class="col-sm-3">Transport Type</dt>
+        <dd class="col-sm-9">@Model.TransportType</dd>
+
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+        <dt class="col-sm-3">Cost (USD)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Cost)</dd>
+
+        <dt class="col-sm-3">Cost (ZAR)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CostZar)</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">@Model.Status</dd>
+
+        <dt class="col-sm-3">Created At</dt>
+        <dd class="col-sm-9">@Model.CreatedAt</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

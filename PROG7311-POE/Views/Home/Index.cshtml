@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Dashboard - GLMS";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Global Logistics Management System</h1>
+    <p>Your enterprise solution for contract and service request management.</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Contracts</h5>
+                <p class="card-text">Manage client agreements, upload signed PDFs, and track status.</p>
+                <a asp-controller="Contracts" asp-action="Index" class="btn btn-primary">Go to Contracts</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Service Requests</h5>
+                <p class="card-text">Create and track logistics requests against active contracts.</p>
+                <a asp-controller="ServiceRequests" asp-action="Index" class="btn btn-primary">Go to Requests</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Clients</h5>
+                <p class="card-text">View and manage your business clients.</p>
+                <a asp-controller="Clients" asp-action="Index" class="btn btn-primary">Go to Clients</a>
+            </div>
+        </div>
+    </div>
+</div>
